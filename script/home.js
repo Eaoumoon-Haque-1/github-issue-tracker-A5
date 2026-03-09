@@ -176,6 +176,9 @@ const displayOpenIssues = (data) => {
           </div>
         `;
       displaySection.append(div);
+      div.addEventListener("click", () => {
+      fetchWordInfo(ele.id);
+    });
     }
   });
 };
@@ -241,6 +244,9 @@ const displayCloseIssues = (data) => {
           </div>
         `;
       displaySection.append(div);
+      div.addEventListener("click", () => {
+      fetchWordInfo(ele.id);
+    });
     }
   });
 };
@@ -289,7 +295,7 @@ const displayWordInfo = (data) => {
       <div>
         <h2 class="text-xl font-bold">${data.title} </h2>
       <div class="flex items-center">
-        <button class="btn btn-primary ${bgColor} max-w-16 rounded-[100px] text-[10px] p-2 max-h-6 mr-2">${data.status}</button>
+        <button class=" btn-primary ${bgColor} max-w-16 rounded-[100px] text-[10px] p-2 max-h-6 mr-2">${data.status}</button>
       <p class="w-1 h-1 bg-slate-500 mr-2 rounded-full"></p>
       <span class="text-[#64748bFF] text-[12px] mr-2">Opened by ${data.author} </span>    
       <p class="w-1 h-1 bg-slate-500 mr-2 rounded-full"></p>
@@ -304,7 +310,7 @@ const displayWordInfo = (data) => {
       </div>
       <div>
         <p class="text-[#64748bFF]">Priority:</p>
-        <button class="btn btn-primary ${style.bg} ${style.text} max-w-20 rounded-3xl text-[10px] p-2 max-h-8">${data.priority} </button>
+        <button class=" btn-primary ${style.bg} ${style.text} max-w-20 rounded-3xl text-[10px] p-2 max-h-8">${data.priority} </button>
       </div>
       </div>
     </div>
