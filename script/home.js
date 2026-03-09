@@ -296,7 +296,6 @@ const displayWordInfo = (data) => {
   };
   const style = priorityStyles[data.priority];
   const modalInfo = document.getElementById("modal-info");
-  // modalInfo.className = "max-w-[700px] rounded-md p-8"
   modalInfo.innerHTML = `
   <div class="max-w-[700px] rounded-md p-8 space-y-6">
       <div>
@@ -327,6 +326,5 @@ const displayWordInfo = (data) => {
 
 // all count
 function  calculateCount(nmb){
-  // console.log(allCount.innerText)
   allCount.innerText = `${nmb}`;
 }
