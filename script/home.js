@@ -119,18 +119,21 @@ const displayAllIssues = (data) => {
 };
 
 document.getElementById("open-btn-id").addEventListener("click", async () => {
+  loadSpinner(true);
   const res = await fetch(
     "https://phi-lab-server.vercel.app/api/v1/lab/issues ",
   );
   const data = await res.json();
+  loadSpinner(false);
   displayOpenIssues(data.data);
+
   calculateCount(44)
 });
 
 const displayOpenIssues = (data) => {
   displaySection.innerHTML = "";
 
-  data.forEach((ele) => {
+  data.forEach((ele) =>{
     const priorityStyles = {
       high: {
         text: "text-[#ef4444FF]",
@@ -186,11 +189,13 @@ const displayOpenIssues = (data) => {
 // display close issues
 
 document.getElementById("close-btn-id").addEventListener("click", async () => {
+  loadSpinner(true);
   const res = await fetch(
     "https://phi-lab-server.vercel.app/api/v1/lab/issues ",
   );
   const data = await res.json();
   console.log(data.data);
+  loadSpinner(false);
   displayCloseIssues(data.data);
   calculateCount(6)
 });
@@ -254,11 +259,13 @@ const displayCloseIssues = (data) => {
 // all
 
 document.getElementById("all-btn-id").addEventListener("click", async () => {
+  loadSpinner(true);
   const res = await fetch(
     "https://phi-lab-server.vercel.app/api/v1/lab/issues ",
   );
   const data = await res.json();
   console.log(data.data);
+  loadSpinner(false);
   displayAllIssues(data.data);
 });
 
