@@ -69,9 +69,9 @@
     <section
       class="w-10/12 mx-auto shadow-lg flex flex-col mt-10 gap-2 p-4 lg:p-6 space-x-2 lg:mt-16 lg:flex-row"
     >
-      <button class="btn btn-primary w-full sm:w-auto">ALL</button>
-      <button class="btn-secondary w-full sm:w-auto">Open</button>
-      <button class="btn-secondary w-full sm:w-auto">Closed</button>
+      <button id="all-btn-id" class="btn btn-primary w-full sm:w-auto">ALL</button>
+      <button id="open-btn-id" class="btn-secondary w-full sm:w-auto">Open</button>
+      <button id="close-btn-id" class="btn-secondary w-full sm:w-auto">Closed</button>
     </section>
     <!-- Toggle buttons end -->
     <!-- main body start -->
@@ -83,7 +83,7 @@
           <img class="" src="./assets/Aperture.png" alt="" srcset="" />
           <div class="flex-col justify-start">
             <p class="text-xl lg:text-2xl font-semibold">
-              <span id="total-count-id">50</span> Issues
+              <span id="all-count-id">50</span> Issues
             </p>
             <p class="text-[#64748bFF]">Track and manage your project issues</p>
           </div>
@@ -101,6 +101,7 @@
        </section>
        
       <!-- Card section -->
+
       <section
         id="all-issues-id"
         class="p-6 grid grid-cols-4 gap-3 bg-[#fbfbfbFF] shadow-md"
@@ -108,8 +109,23 @@
 
       </section>
     </section>
+
     <!-- main body end -->
+    <!-- modal start -->
+      <dialog id="wordModal" class="modal modal-bottom sm:modal-middle">
+      <div class="modal-box">
+        <div id="modal-info" class="space-y-[10px]"></div>
+        <div class="modal-action">
+          <form method="dialog">
+            <!-- if there is a button in form, it will close the modal -->
+            <button class="btn btn-primary">Close</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
     
+    
+    <!-- modal end -->
 
     <script src="./script/home.js"></script>
   </body>

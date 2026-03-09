@@ -1,6 +1,14 @@
 const displaySection = document.getElementById("all-issues-id");
 const loadSection = document.getElementById("load-id");
+const allCount = document.getElementById("all-count-id");
+const createElements = (arr) => {
+  const htmlElements = arr.map(
+    (el) => `<span class="p-2 rounded bg-yellow-200 text-sm">${el}</span>`,
+  );
+  return htmlElements.join(" ");
+};
 
+// Load spinner
 const loadSpinner = (status) => {
   if (status) {
     loadSection.classList.remove("hidden");
@@ -24,39 +32,6 @@ const fetchAllIssues = async () => {
 
 fetchAllIssues();
 
-
-// displaying all issues
-
-// assignee
-// :
-// "jane_smith"
-// author
-// :
-// "john_doe"
-// createdAt
-// :
-// "2024-01-15T10:30:00Z"
-// description
-// :
-// "The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior."
-// id
-// :
-// 1
-// labels
-// :
-// (2) ['bug', 'help wanted']
-// priority
-// :
-// "high"
-// status
-// :
-// "open"
-// title
-// :
-// "Fix navigation menu on mobile devices"
-// updatedAt
-// :
-// "2024-01-15T10:30:00Z"
 const displayAllIssues = (data) => {
   displaySection.innerHTML = "";
 
@@ -86,6 +61,7 @@ const displayAllIssues = (data) => {
     };
     const style = priorityStyles[ele.priority];
     div.className = `border-t-[3px]  border border-gray-300 rounded p-4 space-y-3 shadow ${borderColor}`;
+
     div.innerHTML = `
           <div class="flex justify-between items-center">
                 <img src="${statusImg}" alt="" srcset=""/>
@@ -103,25 +79,217 @@ const displayAllIssues = (data) => {
               ${ele.description}
             </p>
           </div>
-          <div class="flex mb-4 gap-1">
-            <div
-              class="flex gap-1 flex-1 p-2 rounded-2xl bg-[#feececFF] border max-w-14 border-[#fecacaFF]"
-            >
-              <img class="w-3" src="./assets/bugdroid.png" alt="" srcset="" />
-              <p class="text-xs text-[#ef4444FF] text-center">BUG</p>
-            </div>
-            <div
-              class="flex gap-1 flex-1 p-2 text-xs rounded-2xl text-[#d97706FF] bg-[#fff8dbFF] max-w-28 text-center border border-[#fde68aFF]"
-            >
-              <img class="w-2" src="./assets/lifebuoy.png" alt="" srcset="" />
-              <p class="text-xs text-[#d97706FF] text-center">HELP WANTED</p>
-            </div>
-          </div>
+            
+            <div class="">${createElements(ele.labels)}</div>
+
           <div class="p-4 space-y-2 border border-[#e4e4e7FF] rounded">
             <p class="text-sm">#${ele.id} by ${ele.author}</p>
             <p class="text-sm">${ele.createdAt.slice(0, 10)}</p>
           </div>
         `;
     displaySection.append(div);
+    div.addEventListener("click", () => {
+      fetchWordInfo(ele.id);
+    });
   });
 };
+
+document.getElementById("open-btn-id").addEventListener("click", async () => {
+  const res = await fetch(
+    "https://phi-lab-server.vercel.app/api/v1/lab/issues ",
+  );
+  const data = await res.json();
+  displayOpenIssues(data.data);
+  calculateCount(44)
+});
+
+const displayOpenIssues = (data) => {
+  displaySection.innerHTML = "";
+
+  data.forEach((ele) => {
+    const priorityStyles = {
+      high: {
+        text: "text-[#ef4444FF]",
+        bg: "bg-[#feececFF]",
+      },
+      medium: {
+        text: "text-[#f59e0bFF]",
+        bg: "bg-[#fff6d1FF]",
+      },
+      low: {
+        text: "text-[#9ca3afFF]",
+        bg: "bg-[#eeeff2FF]",
+      },
+    };
+    const style = priorityStyles[ele.priority];
+
+    if (ele.status == "open") {
+      const div = document.createElement("div");
+      div.className = `border-t-[3px]  border border-gray-300 rounded p-4 space-y-3 shadow border-t-[#00a96eFF]`;
+      div.innerHTML = `
+          <div class="flex justify-between items-center">
+                <img src="./assets/Open-Status.png" alt="" srcset=""/>
+            <div
+              class="pt-[6px] ${style.bg} ${style.text}  pb-[6px] pl-6 pr-6 rounded-3xl  max-w-auto text-center "
+            >
+              ${ele.priority}
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-sm font-semibold">
+              ${ele.title}
+            </p>
+            <p class="text-[#64748bFF] text-xs line-clamp-2">
+              ${ele.description}
+            </p>
+          </div>
+            
+            <div class="">${createElements(ele.labels)}</div>
+
+          <div class="p-4 space-y-2 border border-[#e4e4e7FF] rounded">
+            <p class="text-sm">#${ele.id} by ${ele.author}</p>
+            <p class="text-sm">${ele.createdAt.slice(0, 10)}</p>
+          </div>
+        `;
+      displaySection.append(div);
+    }
+  });
+};
+
+// display close issues
+
+document.getElementById("close-btn-id").addEventListener("click", async () => {
+  const res = await fetch(
+    "https://phi-lab-server.vercel.app/api/v1/lab/issues ",
+  );
+  const data = await res.json();
+  console.log(data.data);
+  displayCloseIssues(data.data);
+  calculateCount(6)
+});
+
+const displayCloseIssues = (data) => {
+  displaySection.innerHTML = "";
+
+  data.forEach((ele) => {
+    const priorityStyles = {
+      high: {
+        text: "text-[#ef4444FF]",
+        bg: "bg-[#feececFF]",
+      },
+      medium: {
+        text: "text-[#f59e0bFF]",
+        bg: "bg-[#fff6d1FF]",
+      },
+      low: {
+        text: "text-[#9ca3afFF]",
+        bg: "bg-[#eeeff2FF]",
+      },
+    };
+    const style = priorityStyles[ele.priority];
+
+    if (ele.status == "closed") {
+      const div = document.createElement("div");
+      div.className = `border-t-[3px]  border border-gray-300 rounded p-4 space-y-3 shadow border-t-[#a855f7FF]`;
+      div.innerHTML = `
+          <div class="flex justify-between items-center">
+                <img src="./assets/Closed- Status .png" alt="" srcset=""/>
+            <div
+              class="pt-[6px] ${style.bg} ${style.text}  pb-[6px] pl-6 pr-6 rounded-3xl  max-w-auto text-center "
+            >
+              ${ele.priority}
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-sm font-semibold">
+              ${ele.title}
+            </p>
+            <p class="text-[#64748bFF] text-xs line-clamp-2">
+              ${ele.description}
+            </p>
+          </div>
+            
+            <div class="">${createElements(ele.labels)}</div>
+
+          <div class="p-4 space-y-2 border border-[#e4e4e7FF] rounded">
+            <p class="text-sm">#${ele.id} by ${ele.author}</p>
+            <p class="text-sm">${ele.createdAt.slice(0, 10)}</p>
+          </div>
+        `;
+      displaySection.append(div);
+    }
+  });
+};
+
+// all
+
+document.getElementById("all-btn-id").addEventListener("click", async () => {
+  const res = await fetch(
+    "https://phi-lab-server.vercel.app/api/v1/lab/issues ",
+  );
+  const data = await res.json();
+  console.log(data.data);
+  displayAllIssues(data.data);
+});
+
+// modal
+// fetching single word to show in modal
+const fetchWordInfo = async (id) => {
+  const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  displayWordInfo(data.data);
+};
+const displayWordInfo = (data) => {
+  const isOpen = data.status === "open";
+  const bgColor = isOpen ? "bg-[#00a96eFF]" : "bg-[#a855f7FF]";
+  const priorityStyles = {
+    high: {
+      text: "text-[#ef4444FF]",
+      bg: "bg-[#feececFF]",
+    },
+    medium: {
+      text: "text-[#f59e0bFF]",
+      bg: "bg-[#fff6d1FF]",
+    },
+    low: {
+      text: "text-[#9ca3afFF]",
+      bg: "bg-[#eeeff2FF]",
+    },
+  };
+  const style = priorityStyles[data.priority];
+  const modalInfo = document.getElementById("modal-info");
+  // modalInfo.className = "max-w-[700px] rounded-md p-8"
+  modalInfo.innerHTML = `
+  <div class="max-w-[700px] rounded-md p-8 space-y-6">
+      <div>
+        <h2 class="text-xl font-bold">${data.title} </h2>
+      <div class="flex items-center">
+        <button class="btn btn-primary ${bgColor} max-w-16 rounded-[100px] text-[10px] p-2 max-h-6 mr-2">${data.status}</button>
+      <p class="w-1 h-1 bg-slate-500 mr-2 rounded-full"></p>
+      <span class="text-[#64748bFF] text-[12px] mr-2">Opened by ${data.author} </span>    
+      <p class="w-1 h-1 bg-slate-500 mr-2 rounded-full"></p>
+      <span class="text-[#64748bFF] text-[12px]"> ${data.createdAt.slice(0, 10)}</span>
+      </div>
+      </div>
+      <p class="text-[#64748bFF]">${data.description}</p>
+      <div class="flex items-center justify-between">
+        <div>
+        <p class="text-[#64748bFF]">Assignee:</p>
+        <p>${data.author} </p>
+      </div>
+      <div>
+        <p class="text-[#64748bFF]">Priority:</p>
+        <button class="btn btn-primary ${style.bg} ${style.text} max-w-20 rounded-3xl text-[10px] p-2 max-h-8">${data.priority} </button>
+      </div>
+      </div>
+    </div>
+  `;
+  wordModal.showModal();
+};
+
+// all count
+function  calculateCount(nmb){
+  // console.log(allCount.innerText)
+  allCount.innerText = `${nmb}`;
+}
