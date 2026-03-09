@@ -1,12 +1,36 @@
 const displaySection = document.getElementById("all-issues-id");
 const loadSection = document.getElementById("load-id");
 const allCount = document.getElementById("all-count-id");
+
+const allButtons = document.getElementById('all-btn-id');
+const openButtons = document.getElementById('open-btn-id');
+const closeButtons = document.getElementById('close-btn-id');
+
+
 const createElements = (arr) => {
   const htmlElements = arr.map(
     (el) => `<span class="p-2 rounded bg-yellow-200 text-sm">${el}</span>`,
   );
   return htmlElements.join(" ");
 };
+
+
+function toggleStyle(id){
+    allButtons.classList.remove('btn', 'btn-primary');
+    openButtons.classList.remove('btn', 'btn-primary');
+    closeButtons.classList.remove('btn', 'btn-primary');
+
+    allButtons.classList.add('btn-secondary');
+    openButtons.classList.add('btn-secondary');
+    closeButtons.classList.add('btn-secondary');
+
+    const selected = document.getElementById(id);
+    selected.classList.remove('btn-secondary');
+    selected.classList.add('btn', 'btn-primary');
+    currentPosition = id;
+
+
+}
 
 // Load spinner
 const loadSpinner = (status) => {
